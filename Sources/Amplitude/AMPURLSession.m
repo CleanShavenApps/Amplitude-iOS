@@ -48,6 +48,11 @@
     if ((self = [super init])) {
         [AMPURLSession pinSSLCertificate:@[@"ComodoRsaCA", @"ComodoRsaDomainValidationCA"]];
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.allowsCellularAccess = NO;
+        if (@available(iOS 13.0, *)) {
+            configuration.allowsExpensiveNetworkAccess = NO;
+            configuration.allowsConstrainedNetworkAccess = NO;
+        }
         _sharedSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     }
     return self;
