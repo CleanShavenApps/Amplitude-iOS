@@ -52,6 +52,7 @@
 
 @property (nonatomic, strong) NSOperationQueue *backgroundQueue;
 @property (nonatomic, strong) NSOperationQueue *initializerQueue;
+@property (nonatomic, strong) NSURLSession *urlSession;
 @property (nonatomic, strong) AMPDatabaseHelper *dbHelper;
 @property (nonatomic, assign) BOOL initialized;
 @property (nonatomic, assign) BOOL sslPinningEnabled;
@@ -101,6 +102,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
     BOOL _inForeground;
     BOOL _offline;
+    BOOL _sendOverInexpensiveNetworkOnly;
 
     NSString* _serverUrl;
     NSString* _token;
@@ -232,6 +234,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
         _disableIdfaTracking = NO;
         _backoffUpload = NO;
         _offline = NO;
+        _sendOverInexpensiveNetworkOnly = NO;
         _serverUrl = SAFE_ARC_RETAIN(kAMPEventLogUrl);
         _trackingOptions = SAFE_ARC_RETAIN([AMPTrackingOptions options]);
         _apiPropertiesTrackingOptions = SAFE_ARC_RETAIN([NSDictionary dictionary]);
@@ -808,6 +811,23 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
 #pragma mark - Upload events
 
+- (NSURLSession *)urlSession {
+    if (_urlSession != nil) {
+        return _urlSession;
+    }
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    if (self->_sendOverInexpensiveNetworkOnly) {
+        configuration.allowsCellularAccess = NO;
+        if (@available(iOS 13.0, *)) {
+            configuration.allowsExpensiveNetworkAccess = NO;
+            configuration.allowsConstrainedNetworkAccess = NO;
+        }
+    }
+    _urlSession = SAFE_ARC_RETAIN([NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:nil]);
+    return _urlSession;
+}
+
 - (void)uploadEventsWithDelay:(int)delay {
     if (!_updateScheduled) {
         _updateScheduled = YES;
@@ -1008,11 +1028,12 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
     // If pinning is enabled, use the AMPURLSession that handles it.
 #if AMPLITUDE_SSL_PINNING
-    id session = (self.sslPinningEnabled ? [AMPURLSession class] : [NSURLSession class]);
+    id session = (self.sslPinningEnabled ? [[AMPURLSession class] sharedSession] : self.urlSession);
 #else
-    id session = [NSURLSession class];
+    id session = self.urlSession;
 #endif
-    [[[session sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         BOOL uploadSuccessful = NO;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
         if (response != nil) {
@@ -1409,6 +1430,14 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
     if (!_offline) {
         [self uploadEvents];
+    }
+}
+
+- (void)setSendOverInexpensiveNetworkOnly:(BOOL)sendOverInexpensiveNetworkOnly {
+    if (_sendOverInexpensiveNetworkOnly != sendOverInexpensiveNetworkOnly) {
+        _sendOverInexpensiveNetworkOnly = sendOverInexpensiveNetworkOnly;
+        SAFE_ARC_RELEASE(_urlSession);
+        _urlSession = nil;
     }
 }
 

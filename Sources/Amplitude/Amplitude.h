@@ -492,6 +492,15 @@
 - (void)setOffline:(BOOL)offline;
 
 /**
+ Use only non-constrainted or wifi network for sending of logged events to Amplitude servers.
+
+ Setting this to YES would prevent the use of cellular, personal hotspot, or any network explicitly marked by user for low data use, for sending logged events to Amplitude servers.
+
+ @param offline                  Whether logged events should be sent to Amplitude servers.
+ */
+- (void)setSendOverInexpensiveNetworkOnly:(BOOL)sendOverInexpensiveNetworkOnly;
+
+/**
  Enables location tracking.
 
  If the user has granted your app location permissions, the SDK will also grab the location of the user. Amplitude will never prompt the user for location permissions itself, this must be done by your app.
