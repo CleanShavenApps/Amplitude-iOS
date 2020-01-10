@@ -492,11 +492,11 @@
 - (void)setOffline:(BOOL)offline;
 
 /**
- Use only non-constrainted or wifi network for sending of logged events to Amplitude servers.
-
- Setting this to YES would prevent the use of cellular, personal hotspot, or any network explicitly marked by user for low data use, for sending logged events to Amplitude servers.
-
- @param offline                  Whether logged events should be sent to Amplitude servers.
+ Use only non-cellular, inexpensive and non-constrainted network for sending of logged events to Amplitude servers.
+ 
+ Setting this to YES would prevent the use of expensive network for sending logged events to Amplitude servers. Expensive network includes cellular network, and in iOS 13—personal hotspot and any network explicitly marked by user for low data use.
+ 
+ @param sendOverInexpensiveNetworkOnly          Whether logged events should be sent over inexpensive network only
  */
 - (void)setSendOverInexpensiveNetworkOnly:(BOOL)sendOverInexpensiveNetworkOnly;
 
