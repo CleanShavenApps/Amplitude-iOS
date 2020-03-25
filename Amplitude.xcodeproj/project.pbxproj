@@ -12,7 +12,7 @@
 		120A6DD3241F571C0007C375 /* AmplitudePrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 120A6DD0241F571C0007C375 /* AmplitudePrivate.h */; };
 		1213D89B24176E4700300E98 /* AmplitudeFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 1213D89824176E4700300E98 /* AmplitudeFramework.h */; };
 		1213D89C24176E4700300E98 /* AmplitudeFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 1213D89824176E4700300E98 /* AmplitudeFramework.h */; };
-		1213D89D24176E4700300E98 /* AmplitudeFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 1213D89824176E4700300E98 /* AmplitudeFramework.h */; };
+		1213D89D24176E4700300E98 /* AmplitudeFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 1213D89824176E4700300E98 /* AmplitudeFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		12C972B824105B2C00E9CDDB /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C972AF24105B2C00E9CDDB /* Amplitude.framework */; };
 		12C972D424105C3600E9CDDB /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C972CB24105C3600E9CDDB /* Amplitude.framework */; };
 		12C972F024105C6500E9CDDB /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C972E724105C6500E9CDDB /* Amplitude.framework */; };
@@ -551,6 +551,7 @@
 				12C97396241242B600E9CDDB /* AMPIdentify.h in Headers */,
 				12C97393241242A300E9CDDB /* Amplitude+SSLPinning.h in Headers */,
 				12C97399241242CE00E9CDDB /* AMPTrackingOptions.h in Headers */,
+				1213D89D24176E4700300E98 /* AmplitudeFramework.h in Headers */,
 				12C973832412423900E9CDDB /* AMPURLConnection.h in Headers */,
 				12C973892412425000E9CDDB /* AMPUtils.h in Headers */,
 				12C973862412424300E9CDDB /* AMPURLSession.h in Headers */,
@@ -560,7 +561,6 @@
 				12C9738D2412428300E9CDDB /* AMPDatabaseHelper.h in Headers */,
 				12C973372412416D00E9CDDB /* AMPConstants.h in Headers */,
 				12C9739F2412431500E9CDDB /* ISPPinnedNSURLConnectionDelegate.h in Headers */,
-				1213D89D24176E4700300E98 /* AmplitudeFramework.h in Headers */,
 				12C973802412422800E9CDDB /* AMPRevenue.h in Headers */,
 				12C9737A2412420F00E9CDDB /* AMPDeviceInfo.h in Headers */,
 			);
